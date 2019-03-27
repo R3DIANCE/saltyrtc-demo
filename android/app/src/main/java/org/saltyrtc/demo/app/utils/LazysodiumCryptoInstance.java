@@ -8,8 +8,8 @@
 
 package org.saltyrtc.demo.app.utils;
 
-import com.goterl.lazycode.lazysodium.LazySodiumJava;
-import com.goterl.lazycode.lazysodium.SodiumJava;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
 import com.goterl.lazycode.lazysodium.interfaces.Box;
 import org.saltyrtc.client.annotations.NonNull;
 import org.saltyrtc.client.crypto.CryptoException;
@@ -27,11 +27,11 @@ public class LazysodiumCryptoInstance implements CryptoInstance {
     @NonNull private final byte[] sharedKey;
 
     public LazysodiumCryptoInstance(
-        @NonNull SodiumJava sodium,
+        @NonNull SodiumAndroid sodium,
         @NonNull byte[] ownPrivateKey,
         @NonNull byte[] otherPublicKey
     ) throws CryptoException {
-        this.sodium = new LazySodiumJava(sodium);
+        this.sodium = new LazySodiumAndroid(sodium);
 
         // Verify key lengths
         if (otherPublicKey.length != CryptoProvider.PUBLICKEYBYTES) {

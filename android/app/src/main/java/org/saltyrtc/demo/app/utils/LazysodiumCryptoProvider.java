@@ -8,8 +8,8 @@
 
 package org.saltyrtc.demo.app.utils;
 
-import com.goterl.lazycode.lazysodium.LazySodiumJava;
-import com.goterl.lazycode.lazysodium.SodiumJava;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
 import com.goterl.lazycode.lazysodium.interfaces.Box;
 import com.goterl.lazycode.lazysodium.interfaces.SecretBox;
 import org.saltyrtc.client.annotations.NonNull;
@@ -26,7 +26,7 @@ import org.saltyrtc.client.crypto.CryptoProvider;
  * `CryptoProvider` interface using the library of your choice.
  */
 public class LazysodiumCryptoProvider implements CryptoProvider {
-    final private static SodiumJava sodium = new SodiumJava();
+    final private static SodiumAndroid sodium = new SodiumAndroid();
 
     @Override
     public void generateKeypair(@NonNull byte[] publickey, @NonNull byte[] privatekey) throws CryptoException {
@@ -39,7 +39,7 @@ public class LazysodiumCryptoProvider implements CryptoProvider {
         }
 
         // Generate keypair
-        final Box.Native lazySodium = new LazySodiumJava(sodium);
+        final Box.Native lazySodium = new LazySodiumAndroid(sodium);
         final boolean success = lazySodium.cryptoBoxKeypair(publickey, privatekey);
         if (!success) {
             throw new CryptoException("Could not generate keypair");
@@ -55,7 +55,7 @@ public class LazysodiumCryptoProvider implements CryptoProvider {
         }
 
         // Derive public key from private key
-        final LazySodiumJava lazySodium = new LazySodiumJava(sodium);
+        final LazySodiumAndroid lazySodium = new LazySodiumAndroid(sodium);
         byte[] publicKey = new byte[CryptoProvider.PUBLICKEYBYTES];
         final boolean success = lazySodium.cryptoScalarMultBase(publicKey, privateKey);
         if (!success) {
@@ -77,7 +77,7 @@ public class LazysodiumCryptoProvider implements CryptoProvider {
         }
 
         // Encrypt
-        final SecretBox.Native lazySodium = new LazySodiumJava(sodium);
+        final SecretBox.Native lazySodium = new LazySodiumAndroid(sodium);
         final byte[] output = new byte[input.length + CryptoProvider.BOXOVERHEAD];
         final boolean success = lazySodium.cryptoSecretBoxEasy(output, input, input.length, nonce, key);
         if (!success) {
@@ -99,7 +99,7 @@ public class LazysodiumCryptoProvider implements CryptoProvider {
         }
 
         // Decrypt
-        final SecretBox.Native lazySodium = new LazySodiumJava(sodium);
+        final SecretBox.Native lazySodium = new LazySodiumAndroid(sodium);
         final byte[] decrypted = new byte[input.length - CryptoProvider.BOXOVERHEAD];
         final boolean success = lazySodium.cryptoSecretBoxOpenEasy(decrypted, input, input.length, nonce, key);
         if (!success) {
